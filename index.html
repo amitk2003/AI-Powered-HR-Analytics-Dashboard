@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-Powered HR Analytics Dashboard</title>
+  <meta name="description" content="Interactive HR analytics platform for workforce trends, attrition, hiring funnel, and engagement metrics powered by AI." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+</head>
+<body>
+
+<!-- ── SIDEBAR ─────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo-mark">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="19" stroke="url(#lg1)" stroke-width="2"/>
+        <path d="M13 27c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="url(#lg1)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="20" cy="15" r="4" fill="url(#lg1)"/>
+        <circle cx="10" cy="22" r="2.5" fill="url(#lg2)" opacity=".7"/>
+        <circle cx="30" cy="22" r="2.5" fill="url(#lg2)" opacity=".7"/>
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#00d4ff"/><stop offset="1" stop-color="#a855f7"/>
+          </linearGradient>
+          <linearGradient id="lg2" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#a855f7"/><stop offset="1" stop-color="#00d4ff"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="logo-main">PeopleAI</span>
+      <span class="logo-sub">HR Analytics</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a href="#" class="nav-item active" data-page="overview" id="nav-overview">
+      <span class="nav-icon">📊</span><span class="nav-label">Overview</span>
+    </a>
+    <a href="#" class="nav-item" data-page="attrition" id="nav-attrition">
+      <span class="nav-icon">📉</span><span class="nav-label">Attrition Analysis</span>
+    </a>
+    <a href="#" class="nav-item" data-page="hiring" id="nav-hiring">
+      <span class="nav-icon">🎯</span><span class="nav-label">Hiring Funnel</span>
+    </a>
+    <a href="#" class="nav-item" data-page="engagement" id="nav-engagement">
+      <span class="nav-icon">💡</span><span class="nav-label">Engagement</span>
+    </a>
+    <a href="#" class="nav-item" data-page="compensation" id="nav-compensation">
+      <span class="nav-icon">💰</span><span class="nav-label">Compensation</span>
+    </a>
+    <a href="#" class="nav-item" data-page="diversity" id="nav-diversity">
+      <span class="nav-icon">🌐</span><span class="nav-label">Diversity</span>
+    </a>
+    <a href="#" class="nav-item" data-page="ai" id="nav-ai">
+      <span class="nav-icon">🤖</span><span class="nav-label">AI Insights</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-pill">
+      <div class="avatar">AK</div>
+      <div class="user-info"><span class="user-name">Amit Kumar</span><span class="user-role">HR Lead</span></div>
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN CONTENT ────────────────────────────────── -->
+<main class="main-content" id="mainContent">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" id="hamburger" aria-label="Toggle sidebar">&#9776;</button>
+      <div class="page-title" id="pageTitle">Overview Dashboard</div>
+    </div>
+    <div class="topbar-right">
+      <div class="filter-group">
+        <select class="filter-select" id="deptFilter">
+          <option value="all">All Departments</option>
+          <option value="engineering">Engineering</option>
+          <option value="sales">Sales</option>
+          <option value="hr">Human Resources</option>
+          <option value="finance">Finance</option>
+          <option value="marketing">Marketing</option>
+          <option value="operations">Operations</option>
+        </select>
+        <select class="filter-select" id="yearFilter">
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+          <option value="2022">2022</option>
+        </select>
+      </div>
+      <div class="live-badge"><span class="pulse-dot"></span>Live Data</div>
+    </div>
+  </header>
+
+  <!-- ── PAGE: OVERVIEW ── -->
+  <section class="page active" id="page-overview">
+    <div class="hero-banner">
+      <div class="hero-content">
+        <h1>Workforce Intelligence <span class="gradient-text">at a Glance</span></h1>
+        <p>Real-time KPIs across workforce, hiring, engagement &amp; compensation — powered by AI.</p>
+      </div>
+      <div class="hero-glow"></div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card" style="--accent:#00d4ff">
+        <div class="kpi-icon">👥</div>
+        <div class="kpi-body">
+          <div class="kpi-value" id="kpi-headcount">4,832</div>
+          <div class="kpi-label">Total Headcount</div>
+          <div class="kpi-change positive">▲ 3.2% YoY</div>
+        </div>
+        <div class="kpi-sparkline"><canvas id="spark1"></canvas></div>
+      </div>
+      <div class="kpi-card" style="--accent:#f43f5e">
+        <div class="kpi-icon">📉</div>
+        <div class="kpi-body">
+          <div class="kpi-value" id="kpi-attrition">14.7%</div>
+          <div class="kpi-label">Attrition Rate</div>
+          <div class="kpi-change negative">▼ 1.4% vs last yr</div>
+        </div>
+        <div class="kpi-sparkline"><canvas id="spark2"></canvas></div>
+      </div>
+      <div class="kpi-card" style="--accent:#a855f7">
+        <div class="kpi-icon">🎯</div>
+        <div class="kpi-body">
+          <div class="kpi-value" id="kpi-offer">72.3%</div>
+          <div class="kpi-label">Offer Acceptance Rate</div>
+          <div class="kpi-change positive">▲ 5.1% YoY</div>
+        </div>
+        <div class="kpi-sparkline"><canvas id="spark3"></canvas></div>
+      </div>
+      <div class="kpi-card" style="--accent:#10b981">
+        <div class="kpi-icon">😊</div>
+        <div class="kpi-body">
+          <div class="kpi-value" id="kpi-esat">7.8<span style="font-size:.5em">/10</span></div>
+          <div class="kpi-label">Employee Satisfaction</div>
+          <div class="kpi-change positive">▲ 0.6 vs last yr</div>
+        </div>
+        <div class="kpi-sparkline"><canvas id="spark4"></canvas></div>
+      </div>
+      <div class="kpi-card" style="--accent:#f59e0b">
+        <div class="kpi-icon">⚠️</div>
+        <div class="kpi-body">
+          <div class="kpi-value" id="kpi-burnout">23.1%</div>
+          <div class="kpi-label">Burnout Risk Index</div>
+          <div class="kpi-change negative">▲ 2.8% — Monitor</div>
+        </div>
+        <div class="kpi-sparkline"><canvas id="spark5"></canvas></div>
+      </div>
+      <div class="kpi-card" style="--accent:#ec4899">
+        <div class="kpi-icon">💰</div>
+        <div class="kpi-body">
+          <div class="kpi-value" id="kpi-salary">₹ 18.4L</div>
+          <div class="kpi-label">Avg. Annual CTC</div>
+          <div class="kpi-change positive">▲ 8.2% YoY</div>
+        </div>
+        <div class="kpi-sparkline"><canvas id="spark6"></canvas></div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-card wide">
+        <div class="chart-header">
+          <div class="chart-title">Headcount Trend by Department</div>
+          <div class="chart-badge">2022–2024</div>
+        </div>
+        <div class="chart-body"><canvas id="headcountTrend"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Attrition by Reason</div>
+        </div>
+        <div class="chart-body"><canvas id="attritionReasons"></canvas></div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-card">
+        <div class="chart-header"><div class="chart-title">Department Headcount Share</div></div>
+        <div class="chart-body"><canvas id="deptShare"></canvas></div>
+      </div>
+      <div class="chart-card wide">
+        <div class="chart-header">
+          <div class="chart-title">Monthly Hiring vs Attrition</div>
+          <div class="chart-badge">2024</div>
+        </div>
+        <div class="chart-body"><canvas id="hiringVsAttrition"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PAGE: ATTRITION ── -->
+  <section class="page" id="page-attrition">
+    <div class="section-header">
+      <h2>Attrition <span class="gradient-text">Analysis</span></h2>
+      <p>Deep-dive into employee exit patterns, risk segments, and retention drivers.</p>
+    </div>
+    <div class="kpi-grid four-col">
+      <div class="kpi-card mini" style="--accent:#f43f5e">
+        <div class="kpi-icon">🚪</div><div class="kpi-body"><div class="kpi-value">709</div><div class="kpi-label">Exits This Year</div></div>
+      </div>
+      <div class="kpi-card mini" style="--accent:#f59e0b">
+        <div class="kpi-icon">⏳</div><div class="kpi-body"><div class="kpi-value">18.2 mo</div><div class="kpi-label">Avg. Tenure at Exit</div></div>
+      </div>
+      <div class="kpi-card mini" style="--accent:#a855f7">
+        <div class="kpi-icon">🔴</div><div class="kpi-body"><div class="kpi-value">312</div><div class="kpi-label">High-Risk Employees</div></div>
+      </div>
+      <div class="kpi-card mini" style="--accent:#10b981">
+        <div class="kpi-icon">✅</div><div class="kpi-body"><div class="kpi-value">85.3%</div><div class="kpi-label">Retention Rate</div></div>
+      </div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-card wide">
+        <div class="chart-header"><div class="chart-title">Attrition Rate by Department (%)</div></div>
+        <div class="chart-body"><canvas id="attrByDept"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header"><div class="chart-title">Exit Reasons Breakdown</div></div>
+        <div class="chart-body"><canvas id="exitReasons"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-card">
+        <div class="chart-header"><div class="chart-title">Attrition by Tenure Band</div></div>
+        <div class="chart-body"><canvas id="attrByTenure"></canvas></div>
+      </div>
+      <div class="chart-card wide">
+        <div class="chart-header"><div class="chart-title">Monthly Attrition Trend</div><div class="chart-badge">2024</div></div>
+        <div class="chart-body"><canvas id="attrTrend"></canvas></div>
+      </div>
+    </div>
+    <div class="risk-table-card">
+      <div class="chart-header"><div class="chart-title">🔴 High Attrition Risk — Top Employees (ML Predicted)</div></div>
+      <div class="table-wrap"><table class="data-table" id="riskTable">
+        <thead><tr><th>#</th><th>Employee</th><th>Dept</th><th>Tenure</th><th>Satisfaction</th><th>Risk Score</th><th>Status</th></tr></thead>
+        <tbody id="riskTableBody"></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- ── PAGE: HIRING ── -->
+  <section class="page" id="page-hiring">
+    <div class="section-header">
+      <h2>Hiring Funnel <span class="gradient-text">Performance</span></h2>
+      <p>Track recruitment pipeline efficiency from applications to onboarding.</p>
+    </div>
+    <div class="kpi-grid four-col">
+      <div class="kpi-card mini" style="--accent:#00d4ff"><div class="kpi-icon">📨</div><div class="kpi-body"><div class="kpi-value">14.2K</div><div class="kpi-label">Applications</div></div></div>
+      <div class="kpi-card mini" style="--accent:#a855f7"><div class="kpi-icon">🧪</div><div class="kpi-body"><div class="kpi-value">3,840</div><div class="kpi-label">Screened</div></div></div>
+      <div class="kpi-card mini" style="--accent:#f59e0b"><div class="kpi-icon">🗣️</div><div class="kpi-body"><div class="kpi-value">1,120</div><div class="kpi-label">Interviewed</div></div></div>
+      <div class="kpi-card mini" style="--accent:#10b981"><div class="kpi-icon">✍️</div><div class="kpi-body"><div class="kpi-value">487</div><div class="kpi-label">Offers Made</div></div></div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-card wide">
+        <div class="chart-header"><div class="chart-title">Hiring Funnel — Conversion Stages</div></div>
+        <div class="chart-body"><canvas id="hiringFunnel"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header"><div class="chart-title">Offer Acceptance by Dept</div></div>
+        <div class="chart-body"><canvas id="offerAccept"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-card">
+        <div class="chart-header"><div class="chart-title">Time-to-Hire (Days) by Dept</div></div>
+        <div class="chart-body"><canvas id="timeToHire"></canvas></div>
+      </div>
+      <div class="chart-card wide">
+        <div class="chart-header"><div class="chart-title">Hiring Source Effectiveness</div></div>
+        <div class="chart-body"><canvas id="hiringSource"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PAGE: ENGAGEMENT ── -->
+  <section class="page" id="page-engagement">
+    <div class="section-header">
+      <h2>Employee <span class="gradient-text">Engagement</span></h2>
+      <p>Satisfaction scores, burnout signals, and NLP-powered sentiment analysis.</p>
+    </div>
+    <div class="kpi-grid four-col">
+      <div class="kpi-card mini" style="--accent:#10b981"><div class="kpi-icon">🌟</div><div class="kpi-body"><div class="kpi-value">7.8</div><div class="kpi-label">eNPS Score</div></div></div>
+      <div class="kpi-card mini" style="--accent:#f43f5e"><div class="kpi-icon">🔥</div><div class="kpi-body"><div class="kpi-value">23.1%</div><div class="kpi-label">Burnout Risk</div></div></div>
+      <div class="kpi-card mini" style="--accent:#00d4ff"><div class="kpi-icon">💬</div><div class="kpi-body"><div class="kpi-value">68.4%</div><div class="kpi-label">Positive Sentiment</div></div></div>
+      <div class="kpi-card mini" style="--accent:#a855f7"><div class="kpi-icon">📋</div><div class="kpi-body"><div class="kpi-value">82%</div><div class="kpi-label">Survey Participation</div></div></div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-card wide">
+        <div class="chart-header"><div class="chart-title">Satisfaction Score by Department</div></div>
+        <div class="chart-body"><canvas id="satByDept"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header"><div class="chart-title">NLP Sentiment Distribution</div></div>
+        <div class="chart-body"><canvas id="sentimentDist"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-card">
+        <div class="chart-header"><div class="chart-title">Burnout Risk by Department</div></div>
+        <div class="chart-body"><canvas id="burnoutByDept"></canvas></div>
+      </div>
+      <div class="chart-card wide">
+        <div class="chart-header"><div class="chart-title">Engagement Score Trend (Monthly)</div></div>
+        <div class="chart-body"><canvas id="engagementTrend"></canvas></div>
+      </div>
+    </div>
+    <div class="sentiment-cards">
+      <div class="chart-header"><div class="chart-title">💬 Recent Employee Feedback — NLP Analysis</div></div>
+      <div class="feedback-grid" id="feedbackGrid"></div>
+    </div>
+  </section>
+
+  <!-- ── PAGE: COMPENSATION ── -->
+  <section class="page" id="page-compensation">
+    <div class="section-header">
+      <h2>Compensation <span class="gradient-text">&amp; Promotions</span></h2>
+      <p>Salary distribution, band analysis, and promotion pipeline insights.</p>
+    </div>
+    <div class="kpi-grid four-col">
+      <div class="kpi-card mini" style="--accent:#ec4899"><div class="kpi-icon">💰</div><div class="kpi-body"><div class="kpi-value">₹18.4L</div><div class="kpi-label">Avg. CTC</div></div></div>
+      <div class="kpi-card mini" style="--accent:#f59e0b"><div class="kpi-icon">📈</div><div class="kpi-body"><div class="kpi-value">8.2%</div><div class="kpi-label">Avg. Hike</div></div></div>
+      <div class="kpi-card mini" style="--accent:#10b981"><div class="kpi-icon">🏆</div><div class="kpi-body"><div class="kpi-value">347</div><div class="kpi-label">Promotions (2024)</div></div></div>
+      <div class="kpi-card mini" style="--accent:#a855f7"><div class="kpi-icon">⚖️</div><div class="kpi-body"><div class="kpi-value">94.1%</div><div class="kpi-label">Pay Equity Index</div></div></div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-card wide">
+        <div class="chart-header"><div class="chart-title">Salary Distribution by Department (₹ Lakhs)</div></div>
+        <div class="chart-body"><canvas id="salaryDist"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header"><div class="chart-title">Pay Band Distribution</div></div>
+        <div class="chart-body"><canvas id="payBand"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-card">
+        <div class="chart-header"><div class="chart-title">Promotions by Dept</div></div>
+        <div class="chart-body"><canvas id="promotionByDept"></canvas></div>
+      </div>
+      <div class="chart-card wide">
+        <div class="chart-header"><div class="chart-title">Salary Growth Trend (Avg. CTC Over Time)</div></div>
+        <div class="chart-body"><canvas id="salaryTrend"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PAGE: DIVERSITY ── -->
+  <section class="page" id="page-diversity">
+    <div class="section-header">
+      <h2>Diversity <span class="gradient-text">&amp; Inclusion</span></h2>
+      <p>Gender, age, and department-level diversity metrics.</p>
+    </div>
+    <div class="kpi-grid four-col">
+      <div class="kpi-card mini" style="--accent:#ec4899"><div class="kpi-icon">♀️</div><div class="kpi-body"><div class="kpi-value">38.4%</div><div class="kpi-label">Women in Workforce</div></div></div>
+      <div class="kpi-card mini" style="--accent:#00d4ff"><div class="kpi-icon">🌍</div><div class="kpi-body"><div class="kpi-value">24</div><div class="kpi-label">Nationalities</div></div></div>
+      <div class="kpi-card mini" style="--accent:#10b981"><div class="kpi-icon">🏅</div><div class="kpi-body"><div class="kpi-value">29.1%</div><div class="kpi-label">Women in Leadership</div></div></div>
+      <div class="kpi-card mini" style="--accent:#f59e0b"><div class="kpi-icon">📊</div><div class="kpi-body"><div class="kpi-value">0.72</div><div class="kpi-label">D&I Index Score</div></div></div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-card">
+        <div class="chart-header"><div class="chart-title">Gender Ratio Overall</div></div>
+        <div class="chart-body"><canvas id="genderRatio"></canvas></div>
+      </div>
+      <div class="chart-card wide">
+        <div class="chart-header"><div class="chart-title">Gender Ratio by Department</div></div>
+        <div class="chart-body"><canvas id="genderByDept"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-card wide">
+        <div class="chart-header"><div class="chart-title">Age Group Distribution</div></div>
+        <div class="chart-body"><canvas id="ageDist"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-header"><div class="chart-title">Diversity by Employment Type</div></div>
+        <div class="chart-body"><canvas id="empType"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PAGE: AI INSIGHTS ── -->
+  <section class="page" id="page-ai">
+    <div class="section-header">
+      <h2>AI-Powered <span class="gradient-text">Insights</span></h2>
+      <p>ML attrition risk model, NLP sentiment scores &amp; executive narrative summaries.</p>
+    </div>
+    <div class="ai-grid">
+      <div class="ai-model-card">
+        <div class="ai-card-header">
+          <span class="ai-badge">🤖 ML Model</span>
+          <span class="model-tag">Random Forest — Accuracy 91.2%</span>
+        </div>
+        <h3>Attrition Risk Predictor</h3>
+        <p>Trained on 4,832 employee records using Scikit-learn. Features: tenure, satisfaction, salary band, overtime, department.</p>
+        <div class="model-metrics">
+          <div class="metric-pill">Precision <b>89%</b></div>
+          <div class="metric-pill">Recall <b>88%</b></div>
+          <div class="metric-pill">F1 <b>88.5%</b></div>
+          <div class="metric-pill">AUC-ROC <b>0.94</b></div>
+        </div>
+        <div class="chart-body" style="height:200px"><canvas id="rocCurve"></canvas></div>
+      </div>
+      <div class="ai-model-card">
+        <div class="ai-card-header">
+          <span class="ai-badge">💬 NLP</span>
+          <span class="model-tag">VADER Sentiment + Topic Modelling</span>
+        </div>
+        <h3>Feedback Sentiment Engine</h3>
+        <p>Processes 2,400+ employee feedback responses monthly. Identifies top themes, risk signals, and satisfaction drivers.</p>
+        <div class="model-metrics">
+          <div class="metric-pill" style="--pc:#10b981">Positive <b>68%</b></div>
+          <div class="metric-pill" style="--pc:#f59e0b">Neutral <b>21%</b></div>
+          <div class="metric-pill" style="--pc:#f43f5e">Negative <b>11%</b></div>
+        </div>
+        <div class="chart-body" style="height:200px"><canvas id="sentimentNLP"></canvas></div>
+      </div>
+    </div>
+
+    <div class="feature-importance-card">
+      <div class="chart-header"><div class="chart-title">📊 Feature Importance — Attrition Model (Random Forest)</div></div>
+      <div class="chart-body"><canvas id="featureImportance"></canvas></div>
+    </div>
+
+    <div class="narrative-card">
+      <div class="narrative-header">
+        <span class="ai-badge">✨ AI Executive Summary</span>
+        <button class="regenerate-btn" id="regenBtn">↺ Regenerate</button>
+      </div>
+      <div class="narrative-body" id="narrativeBody">
+        <div class="typing-cursor" id="narrativeCursor"></div>
+      </div>
+    </div>
+
+    <div class="recommendations-grid" id="recommendationsGrid"></div>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
