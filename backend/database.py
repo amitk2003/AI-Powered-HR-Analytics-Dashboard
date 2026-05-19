@@ -45,7 +45,7 @@ employees_table = Table(
 
 def init_db(df: pd.DataFrame) -> None:
     """Create tables and populate from DataFrame (idempotent)."""
-    metadata.create_all(engine)
+    metadata.create_all(bind=engine, checkfirst=True)
     with engine.connect() as conn:
         count = conn.execute(text("SELECT COUNT(*) FROM employees")).scalar()
         if count == 0:
